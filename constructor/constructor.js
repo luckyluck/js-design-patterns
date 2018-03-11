@@ -1,5 +1,8 @@
 /**
- * https://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript
+ * Base info abouth the subject:
+ *  - https://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript
+ * Difference between Constructor pattern and Prototype pettern:
+ *  - https://stackoverflow.com/questions/35057827/difference-between-constructor-pattern-and-prototype-pattern
  */
 
 // Each of the following options will create a new empty object:
@@ -100,3 +103,39 @@ console.log(driver.dateOfBirth);
 
 // Get the property we set (100mph)
 console.log(driver.topSpeed);
+
+
+// Basic constructors
+
+function Car(model, year, miles) {
+    this.model = model;
+    this.year = year;
+    this.miles = miles;
+
+    // In this case method will be redifined for each new instance of the function
+    // This variant isn't really optimal
+    // this.toString = function() {
+    //     return this.model + ' has done ' + this.miles + ' miles';
+    // };
+}
+
+// In this case method will be shared among all the instances
+// wihtout redefining
+Car.prototype.toString = function() {
+    return this.model + ' has done ' + this.miles + ' miles';
+};
+
+// Usage:
+
+// We can create new instances of the car
+var civic = new Car('Honda Civic', 2009, 20000);
+var mondeo = new Car('Ford Mondeo', 2010, 5000);
+
+// and then open our browser console to view the
+// output of the toString() method being called on
+// these objects
+console.log(civic.toString());
+console.log(mondeo.toString());
+
+// In ES6 we have classes and EXTENDS which give us an opportunity
+// to create new objects and implement inheritance easier
