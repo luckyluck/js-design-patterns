@@ -1,0 +1,27 @@
+#main {
+    display: flex;
+    width: 100%;
+}
+
+.catContainer {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    max-width: 50%;
+    overflow: hidden;
+}
+
+.catName {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.catImg {
+    margin: 0 auto;
+    max-height: 400px;
+}
+
+.counter {
+    text-align: center;
+    padding: 5px;
+}
