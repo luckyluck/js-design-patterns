@@ -43,10 +43,15 @@ function getSidebarItem(cat, index) {
     let img = document.createElement('img');
     img.src = cat.src;
 
-    item.appendChild(img);
-    item.addEventListener('click', function() {
+    let nameContainer = document.createElement('h6');
+    nameContainer.setAttribute('class', 'itemName');
+    nameContainer.innerHTML = cat.name;
+    nameContainer.addEventListener('click', function() {
         setMainImage(index, cat);
     });
+
+    item.appendChild(img);
+    item.appendChild(nameContainer);
 
     return item;
 }
