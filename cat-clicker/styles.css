@@ -1,13 +1,56 @@
+html,
+body {
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
 #main {
     display: flex;
-    width: 100%;
+    width: 60%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#sidebar {
+    display: flex;
+    width: 200px;
+    flex-direction: column;
+}
+
+.sidebarItem,
+.sidebarItem > img {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.sidebarItem {
+    margin: 10px;
+}
+
+.sidebarItem:hover,
+.sidebarItem.active {
+    transform: scale(1.2);
+    transition: all .2s ease-out;
+    cursor: pointer;
+}
+
+.sidebarItem.active {
+    border: 2px solid #2a68ff;
+}
+
+#content {
+    display: flex;
+    flex-grow: 1;
 }
 
 .catContainer {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    max-width: 50%;
     overflow: hidden;
 }
 
