@@ -7,15 +7,23 @@
 </head>
 <body>
     <main id="main">
-        <aside id="sidebar"></aside>
+        <aside id="sidebar">
+            <ul class="cat-list"></ul>
+        </aside>
         <div id="content">
-            <div class="catContainer">
-                <h5 class="catName"></h5>
-                <img src="" alt="" class="catImg">
-                <div class="counter"></div>
-            </div>
+            <div class="catContainer"></div>
         </div>
     </main>
     <script src="cat-clicker.js"></script>
+    <script type="text/template" id="sidebarItem">
+        <div class="sidebarItem">
+            <h6 class="itemName">{{name}}</h6>
+        </div>
+    </script>
+    <script type="text/template" id="catContainer">
+        <h5 class="catName">{{name}}</h5>
+        <img src="{{src}}" alt="{{name}}" class="catImg">
+        <div class="counter">{{counter}}</div>
+    </script>
 </body>
 </html>
