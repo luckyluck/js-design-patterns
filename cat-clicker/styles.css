@@ -48,11 +48,12 @@ body {
 #content {
     display: flex;
     flex-grow: 1;
+    flex-direction: column;
 }
 
 #catContainer {
     display: flex;
-    flex-grow: 1;
+    /*flex-grow: 1;*/
     flex-direction: column;
     overflow: hidden;
 }
@@ -70,4 +71,15 @@ body {
 #counter {
     text-align: center;
     padding: 5px;
+}
+
+#adminForm {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+
+}
+
+.hidden {
+    display: none !important;
 }

@@ -21,6 +21,7 @@ window.onload = function () {
             // Tell our views to initialize
             catListView.init();
             catView.init();
+            adminView.init();
         },
         getCats: function() {
             return model.cats;
@@ -35,6 +36,12 @@ window.onload = function () {
         // Increments the counter for the currently-selected cat
         incrementCounter: function () {
             model.currentCat.counter++;
+            catView.render();
+        },
+        // Editing current cat
+        editCurrentCat: function (cat) {
+            this.setCurrentCat(cat);
+            catListView.render();
             catView.render();
         }
     };
@@ -105,6 +112,51 @@ window.onload = function () {
 
             // Finally, add the element to the list
             this.catListElem.appendChild(fragment);
+        }
+    };
+
+    // View for admin section
+    let adminView = {
+        init: function () {
+            this.adminForm = document.getElementById('adminForm');
+            this.inputName = document.getElementById('inputName');
+            this.inputSrc = document.getElementById('inputSrc');
+            this.inputClick = document.getElementById('inputClick');
+            this.adminBtn = document.getElementById('adminBtn');
+            this.cancelBtn = document.getElementById('cancelBtn');
+            this.saveBtn = document.getElementById('saveBtn');
+            this.adminBtn.addEventListener('click', () => {
+                if (this.adminForm.classList.contains('hidden')) {
+                    let cat = octopus.getCurrentCat();
+                    this.adminForm.classList.remove('hidden');
+                    this.inputName.value = cat.name;
+                    this.inputSrc.value = cat.src;
+                    this.inputClick.value = cat.counter;
+                } else {
+                    this.adminForm.classList.add('hidden');
+                }
+            });
+
+            this.cancelBtn.addEventListener('click', event => {
+                event.preventDefault();
+                this.reset();
+            });
+
+            this.saveBtn.addEventListener('click', event => {
+                event.preventDefault();
+                let cat = octopus.getCurrentCat();
+                cat.name = this.inputName.value;
+                cat.src = this.inputSrc.value;
+                cat.counter = this.inputClick.value;
+                octopus.editCurrentCat(cat);
+                this.reset();
+            });
+        },
+        reset: function () {
+            this.adminForm.classList.add('hidden');
+            this.inputName.value = '';
+            this.inputSrc.value = '';
+            this.inputClick.value = '';
         }
     };
 
