@@ -1,89 +1,112 @@
 window.onload = function () {
     // Model
     let model = {
-        data: [
+        currentCat: null,
+        cats: [
             { name: 'Tom', src: 'images/cat1.jpg', counter: 0 },
             { name: 'Snow', src: 'images/cat2.jpg', counter: 0 },
             { name: 'Puffy', src: 'images/cat3.jpg', counter: 0 },
             { name: 'Smash', src: 'images/cat4.jpg', counter: 0 },
             { name: 'Bug', src: 'images/cat5.jpg', counter: 0 },
             { name: 'Ginger', src: 'images/cat6.jpg', counter: 0 }
-        ],
-        getAllCats: function() {
-            return this.data;
-        },
-        getCat: function(index) {
-            return this.data[index];
-        },
-        updateCounter: function(index) {
-            this.data[index].counter += 1;
-        }
+        ]
     };
 
     // Controller
     let octopus = {
         init: function() {
-            view.renderContent(0);
+            // Set our current cat to the first one in the list
+            model.currentCat = model.cats[0];
+
+            // Tell our views to initialize
+            catListView.init();
+            catView.init();
         },
         getCats: function() {
-            return model.getAllCats();
+            return model.cats;
         },
-        getCat: function(index){
-            return model.getCat(index) ;
+        getCurrentCat: function() {
+            return model.currentCat;
         },
-        updateCounter: function(index) {
-            model.updateCounter(index);
-            view.renderContent(index);
+        // Set the currently-selected cat to the object passed in
+        setCurrentCat: function (cat) {
+            model.currentCat = cat;
         },
-        setCat: function (index) {
-            view.renderContent(index);
+        // Increments the counter for the currently-selected cat
+        incrementCounter: function () {
+            model.currentCat.counter++;
+            catView.render();
         }
     };
 
-    // View
-    let view = {
-        renderSidebar: function() {
-            let catList = document.querySelector('.cat-list');
-            catList.innerHTML = '';
+    // View for the current cat
+    let catView = {
+        init: function () {
+            // Store pointers to our DOM elements for easy access later
+            // this.catElem = document.getElementById('catContainer');
+            this.catNameElem = document.getElementById('catName');
+            this.catImageElem = document.getElementById('catImg');
+            this.countElem = document.getElementById('counter');
 
+            // On click, increment the current cat's counter
+            this.catImageElem.addEventListener('click', function() {
+                octopus.incrementCounter();
+            });
+
+            // Render this view (update the DOM elements with the right values)
+            this.render();
+        },
+        render: function () {
+            // Update the DOM elements with values from the current cat
+            let currentCat = octopus.getCurrentCat();
+            this.countElem.textContent = currentCat.counter;
+            this.catNameElem.textContent = currentCat.name;
+            this.catImageElem.src = currentCat.src;
+        }
+    };
+
+    // View for the list of cats
+    let catListView = {
+        init: function () {
+            // Store the DOM element for easy access later
+            this.catListElem = document.getElementById('catList');
+
+            // render this view (update the DOM elements with the right values)
+            this.render();
+        },
+        render: function () {
+            // Get the cats we'll be rendering from the octopus
             let cats = octopus.getCats();
-            let template = document.querySelector('[id="sidebarItem"]').innerHTML;
+
+            // Empty the cat list
+            this.catListElem.innerHTML = '';
+            // Using fragment to avoid appending child into the DOM every time in the loop
+            // for the sake of performance
             let fragment = document.createDocumentFragment();
 
+            // Loop over the cats
             for (let i = 0; i < cats.length; i++) {
-                let li = document.createElement('li');
-                li.innerHTML = template.replace(/{{name}}/g, cats[i].name);
-                li.addEventListener('click', function () {
-                    octopus.setCat(i);
+                // This is the cat we're currently looping over
+                let cat = cats[i];
+
+                // Make a new cat list item and set its text
+                let elem = document.createElement('li');
+                elem.textContent = cat.name;
+
+                // On click, setCurrentCat and render the catView
+                // (we are using let here, other way this solution would use closure-in-a-loop trick to connect the value
+                //  of the cat variable to the click event function)
+                elem.addEventListener('click', function() {
+                    octopus.setCurrentCat(cat);
+                    catView.render();
                 });
-                fragment.appendChild(li);
+                fragment.appendChild(elem);
             }
 
-            catList.appendChild(fragment);
-        },
-        renderContent: function(index) {
-            let catContainer = document.querySelector('.catContainer');
-            catContainer.innerHTML = '';
-            let cat = octopus.getCat(index);
-            if (!cat) {
-                return;
-            }
-
-            let template = document.querySelector('[id="catContainer"]').innerHTML;
-            template = template.replace(/{{name}}/g, cat.name);
-            template = template.replace(/{{src}}/g, cat.src);
-            template = template.replace(/{{counter}}/g, cat.counter);
-
-            catContainer.innerHTML = template;
-            catContainer.childNodes.item(3).addEventListener('click', function() {
-                octopus.updateCounter(index);
-            });
-        },
-        init: function() {
-            this.renderSidebar();
+            // Finally, add the element to the list
+            this.catListElem.appendChild(fragment);
         }
     };
 
-    view.init();
     octopus.init();
 };

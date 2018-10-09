@@ -50,24 +50,24 @@ body {
     flex-grow: 1;
 }
 
-.catContainer {
+#catContainer {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
     overflow: hidden;
 }
 
-.catName {
+#catName {
     text-transform: uppercase;
     text-align: center;
 }
 
-.catImg {
+#catImg {
     margin: 0 auto;
     max-height: 400px;
 }
 
-.counter {
+#counter {
     text-align: center;
     padding: 5px;
 }
